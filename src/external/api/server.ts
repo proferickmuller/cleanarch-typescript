@@ -13,7 +13,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use("/", routing);
-app.use("/produtos", produtosRouting);
+app.use("/produto", produtosRouting);
 
 dotenv.config();
 

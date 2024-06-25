@@ -1,4 +1,4 @@
-import { PropostaEntity } from "../../core/entities/proposta";
+import { PropostaEntity } from "../../domain/entities/proposta";
 
 export class PropostaPresenter {
   static toDTO(proposta: PropostaEntity) {

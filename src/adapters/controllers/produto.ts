@@ -1,18 +1,15 @@
-import { NovoProdutoDTO } from "../../common/dtos/novoProduto.dto.js";
-import { ProdutosUseCase } from "../../core/usecases/produtos.js";
-import { IDataSource } from "../../common/interfaces/datasource.js";
+import {NovoProdutoDTO} from "../../common/dtos/novoProduto.dto.js";
+import {ProdutosUseCase} from "../../domain/usecases/produtos.js";
+import {IDataSource} from "../../common/interfaces/datasource.js";
 
-import { ProdutoGateway } from "../gateways/produto.js";
-import { ProdutoPresenter } from "../presenters/produto.js";
-import {
-  NovaPropostaDTO,
-  PropostaDTO,
-} from "../../common/dtos/proposta.dto.js";
+import {ProdutoGateway} from "../gateways/produto.js";
+import {ProdutoPresenter} from "../presenters/produto.js";
+import {NovaPropostaDTO, PropostaDTO,} from "../../common/dtos/proposta.dto.js";
 
-import { PropostaPresenter } from "../presenters/proposta.js";
-import { ProdutoDTO } from "../../common/dtos/produto.dto.js";
+import {PropostaPresenter} from "../presenters/proposta.js";
+import {ProdutoDTO} from "../../common/dtos/produto.dto.js";
 
-import { ProdutoControllerError } from "./produto.errors.js";
+import {ProdutoControllerError} from "./produto.errors.js";
 
 export class ProdutoController {
   static async buscarPropostas(produtoid: string, datasource: IDataSource) {
@@ -60,6 +57,7 @@ export class ProdutoController {
       throw new ProdutoControllerError("A proposta foi rejeitada");
     }
   }
+
   static async cadastrarProduto(
     novoProduto: NovoProdutoDTO,
     produtosDataSource: IDataSource
@@ -91,5 +89,22 @@ export class ProdutoController {
     }
 
     return ProdutoPresenter.toDTO(produto);
+  }
+
+  static async buscarTodos(
+      produtosDataSource: IDataSource
+  ): Promise<ProdutoDTO[]|null> {
+    const produtosGateway = new ProdutoGateway(produtosDataSource);
+    if (!produtosGateway) {
+      throw new Error("Gateway inválido");
+    }
+
+    const produtos = await ProdutosUseCase.buscarTodos(produtosGateway);
+    if (!produtos) {
+      return null;
+    }
+
+    return produtos.map(produto => ProdutoPresenter.toDTO(produto));
+
   }
 }

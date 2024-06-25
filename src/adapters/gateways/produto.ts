@@ -1,8 +1,8 @@
 import { ProdutoDTO } from "../../common/dtos/produto.dto";
 import { PropostaDTO } from "../../common/dtos/proposta.dto";
 import { IDataSource } from "../../common/interfaces/datasource";
-import { ProdutoEntity } from "../../core/entities/produto";
-import { PropostaEntity } from "../../core/entities/proposta";
+import { ProdutoEntity } from "../../domain/entities/produto";
+import { PropostaEntity } from "../../domain/entities/proposta";
 
 export class ProdutoGateway {
   dataSource: IDataSource;
@@ -39,6 +39,29 @@ export class ProdutoGateway {
     }
 
     return null;
+  }
+
+  async buscarTodos(): Promise<ProdutoEntity[]> {
+    const todosProdutos = await this.dataSource.buscarTodosProdutos();
+
+    console.log(todosProdutos);
+
+    if (todosProdutos) {
+      const produtos: ProdutoEntity[] = [];
+      for (const produto of todosProdutos) {
+        const produtoEntity: ProdutoEntity = {
+          id: produto.id,
+          nome: produto.nome,
+          dataCadastro: produto.dataCadastro,
+          valorEsperado: produto.valorEsperado,
+          valorMinimo: produto.valorMinimo,
+        }
+        produtos.push(produtoEntity);
+      }
+      return produtos;
+    }
+
+    return [];
   }
 
   async cadastrarProposta(novaProposta: PropostaEntity): Promise<boolean> {

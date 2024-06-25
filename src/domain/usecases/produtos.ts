@@ -1,6 +1,6 @@
 import { generateRandomString } from "../../common/helpers/generators";
-import { ProdutoEntity } from "../../core/entities/produto.js";
-import { ProdutoGateway } from "../../operation/gateways/produto.js";
+import { ProdutoEntity } from "../entities/produto.js";
+import { ProdutoGateway } from "../../adapters/gateways/produto.js";
 import { PropostaEntity } from "../entities/proposta";
 
 export class ProdutosUseCase {
@@ -52,5 +52,10 @@ export class ProdutosUseCase {
     produtoGateway.cadastrarProposta(novaProposta);
 
     return novaProposta;
+  }
+
+  static async buscarTodos(produtoGateway: ProdutoGateway) {
+    const produtos = produtoGateway.buscarTodos();
+    return produtos;
   }
 }

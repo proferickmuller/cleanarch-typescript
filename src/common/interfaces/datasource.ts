@@ -6,4 +6,5 @@ export interface IDataSource {
   incluirProduto(produto: ProdutoDTO): Promise<boolean>;
   buscarProdutoPorId(id: string): Promise<ProdutoDTO | null>;
   incluirProposta(proposta: PropostaDTO): Promise<boolean>;
+  buscarTodosProdutos(): Promise<ProdutoDTO[]>
 }
